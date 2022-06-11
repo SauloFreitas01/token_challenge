@@ -31,11 +31,12 @@ describe("CryptoToken erc20 tests", function () {
       })
 
       it('test if the balances of sender and receiver is valid', async()=>{
-        const ownerInitialBalance = await cryptoToken.balanceOf(cryptoToken.ownerAddress());
-        await cryptoToken.connect(cryptoToken.ownerAddress()).transfer(address1.address,50);
+        [owner, address1, address2, _] = await ethers.getSigners();
+        const ownerInitialBalance = await cryptoToken.balanceOf(owner.address);
+        await cryptoToken.connect(owner.address).transfer(address1.address,50);
 
-        expect(await cryptoToken.balanceOf(address1.address)).to.be.equal(50);
-        expect(await cryptoToken.balanceOf(owner.address)).to.be.equal(ownerInitialBalance - 50);
+        expect(await cryptoToken.balanceOf(address1.address)).to.equal(50);
+        expect(await cryptoToken.balanceOf(owner.address)).to.equal(ownerInitialBalance - 50);
       })
     })
     
